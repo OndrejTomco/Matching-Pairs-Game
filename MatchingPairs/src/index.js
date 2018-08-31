@@ -5,8 +5,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Switch from '../node_modules/react-router-dom/Switch';
-import NotFound from './components/NotFound';
-import SinglePlayerPage from './SinglePlayer/SinglePlayerPage';
+import NotFound from './NotFound';
+import SinglePlayerPage from './SinglePlayer/components/SinglePlayerPage';
 
 const routes = (
     <BrowserRouter>

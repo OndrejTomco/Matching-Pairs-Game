@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './css/GameBoard.css';
-import GameCard from '../GameCard';
-import WinningModal from '../WinningModal';
+import '../css/GameBoard.css';
+import GameCard from './GameCard';
+import WinningModal from './WinningModal';
 
 
 class GameBoard extends Component {
@@ -33,7 +33,9 @@ class GameBoard extends Component {
       return card.classList.contains('inactive') === false;
     })
 
-    filteredCards.length > 0 ? console.log('playing') : this.setState(() => ({ ShowWinningModal: true }));
+    filteredCards.length > 0 ? console.log('playing') : setTimeout(() => {
+      this.setState(() => ({ ShowWinningModal: true }));
+    }, 300); 
 
   }
 

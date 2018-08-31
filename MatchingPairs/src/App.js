@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import { Link, Redirect  } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './App.css';
-
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.ValidateInput= this.ValidateInput.bind(this);
+    this.ValidateInput = this.ValidateInput.bind(this);
 
     this.state = {
       didMount: false,
       playerName: null,
-      Redirect:false
-  
+      Redirect: false
+
     }
-}
- 
+  }
 
   componentDidMount() {
     setTimeout(() => {
@@ -31,16 +29,16 @@ class App extends Component {
       e.preventDefault();
       document.getElementById('validation-error').classList.add('d-block');
     } else {
-        this.setState({
-          redirect: true,
-          playerName: playerName
-        })
+      this.setState({
+        redirect: true,
+        playerName: playerName
+      })
     }
   }
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to={'/singleplayer/'+this.state.playerName} />
+      return <Redirect to={'/singleplayer/' + this.state.playerName} push />
     }
   }
 
@@ -56,7 +54,7 @@ class App extends Component {
         </div>
 
         <div className="mt-5">
-        {this.renderRedirect()}
+          {this.renderRedirect()}
 
           <a onClick={this.ValidateInput} className="btn btn-outline-primary"><i class="fas fa-play mr-3"></i>Single player</a>
           <Link to="/multiplayer" className="btn btn-outline-deep-purple"><i className="fas fa-play mr-3"></i>Multi player</Link>

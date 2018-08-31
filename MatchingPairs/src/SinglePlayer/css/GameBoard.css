@@ -1,20 +1,6 @@
 
-.card-img{
-    cursor: pointer;
-    display: inline-block;
-    width: 100px;
-    margin: 10px;
-    border:1px solid black;
-    font-family: 'Bangers', cursive;
-    padding: 15px;
-    background: rgb(231, 231, 231);
-    background: -moz-linear-gradient(171deg, rgba(255,255,255,1) 0%, rgba(186,186,186,1) 100%);
-    background: -webkit-linear-gradient(171deg, rgba(255,255,255,1) 0%, rgba(186,186,186,1) 100%);
-    background: linear-gradient(171deg, rgba(255,255,255,1) 0%, rgba(186,186,186,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#bababa",GradientType=1);
-}
-
 .card{
+    text-align: center;
     transition-duration: .1s;
     transition:opacity 1s;
     cursor: pointer;
@@ -22,20 +8,26 @@
     width: 120px;
     margin: 5px;
     padding: 5px;
-    background-color: rgb(241, 241, 241);
-
-   
+    background-color: rgb(247, 247, 247);
 }
 
 .card:hover{
-    transform: scale(0.95);
+    background-color: rgb(240, 240, 240);
 }
 
 .inactive{
-    opacity:.3;
+    opacity:.5;
 }
 
 #GameBoard{
-    
-    text-align: center;
+    text-align: right;
+}
+
+.fancyFont{
+    font-family: 'Patrick Hand SC', cursive;
+}
+
+.header{
+    font-family: 'Bangers', cursive;
+
 }

@@ -1,7 +1,16 @@
-.SinglePlayerPage{
+.SinglePlayerPage {
     position: relative;
     top:20px;
     /* border: 1px solid black; */
     width: 90%;
 }
 
+.slide-in.visible {
+    opacity: 1;
+}
+  
+.slide-in {
+    opacity:0;
+    transition: opacity 1s ease-in-out;
+  
+}
