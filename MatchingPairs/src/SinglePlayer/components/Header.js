@@ -4,8 +4,8 @@ import '../css/GameBoard.css';
 const Header = (props) => {
     return (
         <div>
-            <h1 className="display-3 header mb-3 text-left">MATCHING PAIRS</h1>
-            <hr />
+            <h1 className="display-4 header mb-3">MATCHING PAIRS <h3 className="text-muted d-inline-block">Memory game</h3>
+            </h1>
         </div>
     )
 }

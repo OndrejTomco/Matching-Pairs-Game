@@ -62,8 +62,10 @@ class WinningModal extends React.Component {
                     <button type="button" onClick={this.closeModal} className="close float-right" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    
                     <h2 className="text-success">You won!</h2>
-                    <h5>You missed <span className="text-warning">{this.props.scores.Missed}</span> out of {this.props.scores.Missed + this.props.scores.Score} Attempts</h5>
+                    <h5>Final score: <span className="text-default"> {this.props.scores.Score} </span></h5>
+                    <h5>Missed attempts: <span className="text-default"> {this.props.scores.Missed} </span></h5>
                     <button className="btn btn-primary mt-3" onClick={this.reloadPage}>Play again</button>
 
                 </Modal>

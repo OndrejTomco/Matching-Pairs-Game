@@ -1,5 +1,5 @@
 
-.card{
+.tile{
     text-align: center;
     transition-duration: .1s;
     transition:opacity 1s;
@@ -11,23 +11,129 @@
     background-color: rgb(247, 247, 247);
 }
 
-.card:hover{
+.tile:hover{
     background-color: rgb(240, 240, 240);
+}
+
+.navbar{
+    width: 70%;
+    margin:0 auto;
+    font-size: 23px;
+    padding: 0px;
+}
+
+.menuOptions{
+    text-align: center;
+    margin:0 auto;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 .inactive{
     opacity:.5;
 }
 
-#GameBoard{
-    text-align: right;
-}
-
 .fancyFont{
     font-family: 'Patrick Hand SC', cursive;
+    font-size: 17px;
 }
 
 .header{
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
     font-family: 'Bangers', cursive;
+}
 
+.table-wrapper-scroll-y {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+
+#GameBoard{
+    margin: 0 auto;
+}
+
+.gameboard-8{
+    max-width: 620px;
+}
+
+.gameboard-10{
+    max-width: 750px;
+}
+
+.gameboard-12{
+    max-width: 800px;
+}
+
+ @media only screen and (max-width: 850px) {
+    .gameboard-12{
+        max-width: 760px;
+    }
+    .gameboard-10{
+        max-width: 600px;
+    }
+    .gameboard-8{
+        max-width: 500px;
+    }
+    .tile{
+        width: 100px;
+    }
+    .tile-img{
+        width: 70px;
+        height:80px;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .gameboard-12{
+        max-width: 650px;
+    }
+    .gameboard-10{
+        max-width: 500px;
+    }
+    .gameboard-8{
+        max-width: 400px;
+    }
+    .header{
+        text-align: center;
+        font-size: 40px;
+    }
+    .tile{
+        width: 90px;
+    }
+    .tile-img{
+        width: 70px;
+        height:80px;
+    }
+}
+
+@media only screen and (max-width: 655px) {
+    .gameboard-12{
+        max-width: 560px;
+    }
+
+    .header{
+        font-size: 30px;
+    }
+   
+    .tile{
+        width: 80px;
+    }
+    .tile-img{
+        width: 60px;
+        height:70px;
+    }
+}
+
+@media only screen and (max-width: 570px) {
+    .gameboard-12{
+        max-width: 400px;
+    }
+    
+    .navbar{
+        width: 100%;
+    }
 }

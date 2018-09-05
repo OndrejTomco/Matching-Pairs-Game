@@ -1,8 +1,9 @@
 .SinglePlayerPage {
     position: relative;
     top:20px;
+    margin:0 auto;
     /* border: 1px solid black; */
-    width: 90%;
+    width: 80%;
 }
 
 .slide-in.visible {
@@ -13,4 +14,11 @@
     opacity:0;
     transition: opacity 1s ease-in-out;
   
+}
+
+@media only screen and (max-width: 1000px) {
+    .SinglePlayerPage {
+
+        width: 90%;
+    }
 }

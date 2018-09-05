@@ -12,7 +12,7 @@ const routes = (
     <BrowserRouter>
         <Switch>
             <Route path="/" component={App} exact={true} />
-            <Route path="/singleplayer/:name" component={SinglePlayerPage} exact={true} />
+            <Route path="/singleplayer" component={SinglePlayerPage} exact={true} />
             <Route path="/multiplayer" component={App} exact={true} />
             <Route component={NotFound} />
         </Switch>

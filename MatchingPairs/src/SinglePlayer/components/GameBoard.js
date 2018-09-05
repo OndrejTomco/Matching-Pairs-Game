@@ -1,56 +1,98 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import '../css/GameBoard.css';
-import GameCard from './GameCard';
+import GameTile from './GameTile';
 import WinningModal from './WinningModal';
-
+import HighScoreModal from './HighScoreModal';
+import Options from './Options';
 
 class GameBoard extends Component {
 
   constructor(props) {
     super(props);
-    this.handleCard = this.handleCard.bind(this);
+    this.handleTile = this.handleTile.bind(this);
     this.compareTiles = this.compareTiles.bind(this);
+    this.showHighScores = this.showHighScores.bind(this);
+    this.hideHighScores = this.hideHighScores.bind(this);
     this.state = {
-      Logos: ['logo-1', 'logo-2', 'logo-3', 'logo-4', 'logo-5', 'logo-6', 'logo-7', 'logo-1', 'logo-2', 'logo-3', 'logo-4', 'logo-5', 'logo-6', 'logo-7'],
-      CurrentlyTurnedTiles: 0,
-      ShowWinningModal: false
+      Logos: [],
+      FlippedTiles: 0,
+      ShowWinningModal: false,
+      ShowHighScoresModal: false
     };
-
-    this.state.Logos.sort(() => 0.5 - Math.random());
   }
 
   componentDidUpdate() {
-    if (this.state.CurrentlyTurnedTiles === 2) {
-      this.disableCards();
+    if (this.state.FlippedTiles === 2) {
+      this.disableTiles();
       this.compareTiles();
     }
+  }
+
+  componentWillMount(props) {
+    let logoArray = [];
+    for (let i = 0; i < this.props.Difficulty; i++) {
+      let canContinue = false;
+
+      while (canContinue === false) {
+        let random = Math.floor(Math.random() * 31) + 1;
+        let num = logoArray.filter((number) => {
+          return number === random;
+        })
+
+        if (num.length === 0) {
+          logoArray.push(random, random);
+          canContinue = true;
+        }
+      }
+    }
+
+    logoArray.sort(() => 0.5 - Math.random());
+    this.setState({ Logos: logoArray });
 
   }
 
   isGameOver() {
-    let allCards = Array.from(document.querySelectorAll('.card'));
-    let filteredCards = allCards.filter((card) => {
-      return card.classList.contains('inactive') === false;
+    let allTiles = Array.from(document.querySelectorAll('.tile'));
+    let filteredTiles = allTiles.filter((tile) => {
+      return tile.classList.contains('inactive') === false;
     })
 
-    filteredCards.length > 0 ? console.log('playing') : setTimeout(() => {
-      this.setState(() => ({ ShowWinningModal: true }));
-    }, 300); 
-
+    if(filteredTiles.length < 1){
+        this.storeScore();
+        this.setState(() => ({ ShowWinningModal: true }));
+    }
   }
 
-  disableCards() {
-    let logos = document.getElementsByClassName("card");
-    let myArray = Array.from(logos);
+  storeScore(){
+    console.log('whats going on');
+    fetch('http://localhost:5000/storeScore', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Name:this.props.NickName,
+        Score: this.props.Score,
+        Missed:this.props.Missed,
+        Difficulty:this.props.Difficulty
+      })
+    }).then((res) => {
+      console.log(res);
+    })
+   }
 
-    myArray.forEach((logo) => {
+  disableTiles() {
+    let logosArray = Array.from(document.getElementsByClassName("tile"));
+
+    logosArray.forEach((logo) => {
       if (logo.classList.contains('disabled') === false)
         logo.className += " disabled";;
     })
   }
 
-  enableCards() {
-
+  enableTiles() {
     let logos = document.getElementsByClassName("disabled");
     let myArray = Array.from(logos);
 
@@ -60,93 +102,91 @@ class GameBoard extends Component {
     })
   }
 
-  turnBack(toBeTurnedBack) {
-
-    toBeTurnedBack.forEach((tile) => {
-      console.log(tile);
+  flipBack(tile) {
+    tile.forEach((tile) => {
       tile.classList.remove('turned');
-      tile.children[0].src = '/nhl-logo.png';
+      tile.children[0].src = '/nhl/nhl-logo.png';
     })
 
-    this.enableCards();
-
+    this.enableTiles();
   }
 
   resetTiles() {
     this.setState(() => ({
-      CurrentlyTurnedTiles: 0,
+      FlippedTiles: 0,
     }));
   }
 
-
   compareTiles() {
-
-    let turnedCards = document.getElementsByClassName('turned');
-    let turnedCardsArray = Array.from(turnedCards);
+    let turnedTiles = document.getElementsByClassName('turned');
+    let turnedTilesArray = Array.from(turnedTiles);
     let match;
 
-    if (turnedCardsArray[0].children[0].src === turnedCardsArray[1].children[0].src) {
+    if (turnedTilesArray[0].children[0].src === turnedTilesArray[1].children[0].src) {
       match = true;
 
-      turnedCardsArray.forEach((tile) => {
+      turnedTilesArray.forEach((tile) => {
         tile.classList.add('inactive');
         tile.classList.remove('turned');
       })
 
+      this.props.setAsideScores(match);
+
       setTimeout(() => {
-        this.enableCards();
-        this.props.setAsideScores(match);
+        this.enableTiles();
+        this.isGameOver();
+
       }, 300);
 
-      this.isGameOver();
 
     } else {
       match = false;
 
+      this.props.setAsideScores(match);
       setTimeout(() => {
-        this.turnBack(turnedCardsArray);
-        this.props.setAsideScores(match);
+        this.flipBack(turnedTilesArray);
       }, 1000);
-
-
-
     }
 
     this.resetTiles();
 
   }
 
-
-  handleCard(tile, props) {
-
+  handleTile(tile, props) {
     tile.parentNode.classList.add('turned');
-    tile.src = '/' + tile.dataset.img + '.png';
+    tile.src = '/nhl/logo-' + tile.dataset.img + '.png';
     tile.parentNode.className += ' disabled';
 
-    if (tile.classList.contains('disabled') === false) {
-      this.setState((prevState) => ({
-        CurrentlyTurnedTiles: prevState.CurrentlyTurnedTiles + 1,
-      }));
-    }
+    this.setState((prevState) => ({
+      FlippedTiles: prevState.FlippedTiles + 1,
+    }));
 
   }
 
-  renderCards() {
-    const cards = [];
+  renderTiles() {
+    const tiles = [];
     for (var i = 0; i < this.state.Logos.length; i++) {
-      cards.push(<GameCard cardClass={'card-' + i} image={this.state.Logos[i]} sendData={this.handleCard} key={i} />)
+      tiles.push(<GameTile imgClass={'tile-img'} tileClass={'z-depth-1 tile tile-' + i} image={this.state.Logos[i]} sendData={this.handleTile} key={i} />)
     }
-    return cards;
+    return tiles;
+  }
+
+  showHighScores(){
+    this.setState(() => ({ ShowHighScoresModal : true }));
+  }
+
+  hideHighScores(){
+    this.setState(() => ({ ShowHighScoresModal : false }));
   }
 
   render() {
     return (
-      <div id="GameBoard">
-        <WinningModal
-          showModal={this.state.ShowWinningModal}
-          scores={this.props}
-        />
-        {this.renderCards()}
+      <div id="GameBoard" className={'text-center mt-3 gameboard-' + this.props.Difficulty}>
+        <Options nickName={this.props.NickName} showHighScores = {this.showHighScores}/>
+        <WinningModal showModal={this.state.ShowWinningModal} scores={this.props} />
+        <HighScoreModal showModal = {this.state.ShowHighScoresModal} hideModal = {this.hideHighScores}/>
+
+        {this.renderTiles()}
       </div>
 
     );
