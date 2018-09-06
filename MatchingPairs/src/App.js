@@ -56,7 +56,7 @@ class App extends Component {
         <h1 className="display-2 header mb-4 text-center">MATCHING PAIRS</h1>
 
         <div className="md-form mt-5">
-          <input type="text" id="playerName" placeholder="NickName" defaultValue={this.props.location.state == undefined ? '': this.props.location.state.playerName} className="form-control form-control-lg d-inline-block col-md-6 col-sm-10 col-10"  />
+          <input type="text" id="playerName" placeholder="NickName" defaultValue={this.props.location.state === undefined ? '': this.props.location.state.playerName} className="form-control form-control-lg d-inline-block col-md-6 col-sm-10 col-10"  />
           <small className="d-none text-danger" id="validation-error">Enter valid NickName</small>
         </div>
         <div className="row">

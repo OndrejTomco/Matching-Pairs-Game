@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import '../css/GameBoard.css';
 import GameTile from './GameTile';
 import WinningModal from './WinningModal';
@@ -14,6 +13,7 @@ class GameBoard extends Component {
     this.compareTiles = this.compareTiles.bind(this);
     this.showHighScores = this.showHighScores.bind(this);
     this.hideHighScores = this.hideHighScores.bind(this);
+    this.hideWinningModal = this.hideWinningModal.bind(this);
     this.state = {
       Logos: [],
       FlippedTiles: 0,
@@ -53,19 +53,15 @@ class GameBoard extends Component {
   }
 
   isGameOver() {
-    let allTiles = Array.from(document.querySelectorAll('.tile'));
-    let filteredTiles = allTiles.filter((tile) => {
-      return tile.classList.contains('inactive') === false;
-    })
+    let activeTiles = Array.from(document.querySelectorAll('.tile:not(.inactive)'));
 
-    if(filteredTiles.length < 1){
-        this.storeScore();
-        this.setState(() => ({ ShowWinningModal: true }));
+    if (activeTiles.length < 1) {
+      this.storeScore();
+      this.setState({ ShowWinningModal: true });
     }
   }
 
-  storeScore(){
-    console.log('whats going on');
+  storeScore() {
     fetch('http://localhost:5000/storeScore', {
       method: 'POST',
       headers: {
@@ -73,33 +69,24 @@ class GameBoard extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        Name:this.props.NickName,
+        Name: this.props.NickName,
         Score: this.props.Score,
-        Missed:this.props.Missed,
-        Difficulty:this.props.Difficulty
+        Missed: this.props.Missed,
+        Difficulty: this.props.Difficulty
       })
     }).then((res) => {
       console.log(res);
     })
-   }
+  }
 
   disableTiles() {
-    let logosArray = Array.from(document.getElementsByClassName("tile"));
-
-    logosArray.forEach((logo) => {
-      if (logo.classList.contains('disabled') === false)
-        logo.className += " disabled";;
-    })
+    let logosArray = Array.from(document.querySelectorAll(".tile:not(.disabled)"));
+    logosArray.forEach(logo => logo.classList.add('disabled'));
   }
 
   enableTiles() {
-    let logos = document.getElementsByClassName("disabled");
-    let myArray = Array.from(logos);
-
-    myArray.forEach((logo) => {
-      if (logo.classList.contains('inactive') === false)
-        logo.classList.remove('disabled');
-    })
+    let logoArray = Array.from(document.querySelectorAll(".disabled:not(.inactive)"));
+    logoArray.forEach(logo => logo.classList.remove('disabled'));
   }
 
   flipBack(tile) {
@@ -112,25 +99,24 @@ class GameBoard extends Component {
   }
 
   resetTiles() {
-    this.setState(() => ({
+    this.setState({
       FlippedTiles: 0,
-    }));
+    });
   }
 
   compareTiles() {
-    let turnedTiles = document.getElementsByClassName('turned');
-    let turnedTilesArray = Array.from(turnedTiles);
+    let turnedTiles = Array.from(document.getElementsByClassName('turned'));
     let match;
 
-    if (turnedTilesArray[0].children[0].src === turnedTilesArray[1].children[0].src) {
+    if (turnedTiles[0].children[0].src === turnedTiles[1].children[0].src) {
       match = true;
 
-      turnedTilesArray.forEach((tile) => {
+      turnedTiles.forEach((tile) => {
         tile.classList.add('inactive');
         tile.classList.remove('turned');
       })
 
-      this.props.setAsideScores(match);
+      this.props.updateScore(match);
 
       setTimeout(() => {
         this.enableTiles();
@@ -142,9 +128,9 @@ class GameBoard extends Component {
     } else {
       match = false;
 
-      this.props.setAsideScores(match);
+      this.props.updateScore(match);
       setTimeout(() => {
-        this.flipBack(turnedTilesArray);
+        this.flipBack(turnedTiles);
       }, 1000);
     }
 
@@ -171,21 +157,25 @@ class GameBoard extends Component {
     return tiles;
   }
 
-  showHighScores(){
-    this.setState(() => ({ ShowHighScoresModal : true }));
+  showHighScores() {
+    this.setState(() => ({ ShowHighScoresModal: true }));
   }
 
-  hideHighScores(){
-    this.setState(() => ({ ShowHighScoresModal : false }));
+  hideHighScores() {
+    this.setState(() => ({ ShowHighScoresModal: false }));
+  }
+
+  hideWinningModal(){
+    this.setState(() => ({ ShowWinningModal: false }));
+
   }
 
   render() {
     return (
       <div id="GameBoard" className={'text-center mt-3 gameboard-' + this.props.Difficulty}>
-        <Options nickName={this.props.NickName} showHighScores = {this.showHighScores}/>
-        <WinningModal showModal={this.state.ShowWinningModal} scores={this.props} />
-        <HighScoreModal showModal = {this.state.ShowHighScoresModal} hideModal = {this.hideHighScores}/>
-
+        <Options nickName={this.props.NickName} showHighScores={this.showHighScores} />
+        <WinningModal showModal={this.state.ShowWinningModal} hideModal={this.hideWinningModal} scores={this.props} />
+        <HighScoreModal showModal={this.state.ShowHighScoresModal} hideModal={this.hideHighScores} />
         {this.renderTiles()}
       </div>
 

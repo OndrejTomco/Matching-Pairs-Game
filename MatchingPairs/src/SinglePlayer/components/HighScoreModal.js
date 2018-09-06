@@ -2,7 +2,6 @@ import React from 'react';
 import Modal from 'react-modal';
 import '../css/GameBoard.css';
 
-
 const customStyles = {
     content: {
         top: '40%',
@@ -49,9 +48,7 @@ class HighScoreModal extends React.Component {
 
 
     openModal() {
-
         this.setState({ modalIsOpen: true });
-
     }
 
     afterOpenModal() {
@@ -81,8 +78,8 @@ class HighScoreModal extends React.Component {
                     <button type="button" onClick={this.closeModal} className="close float-right" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table highScoreTable">
+                    <div className="table-wrapper-scroll-y">
+                        <table className="table highScoreTable">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -95,7 +92,7 @@ class HighScoreModal extends React.Component {
                             <tbody>
                                 {this.state.HighScores.map((score, index) => {
                                     return (
-                                        <tr>
+                                        <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{score.Name}</td>
                                             <td>{score.Score}</td>

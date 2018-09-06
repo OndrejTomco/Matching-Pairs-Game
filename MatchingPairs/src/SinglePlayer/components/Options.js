@@ -1,6 +1,5 @@
 import React from 'react';
 import '../css/GameBoard.css';
-import { Link, Redirect } from 'react-router-dom';
 
 const Options = (props) => {
 

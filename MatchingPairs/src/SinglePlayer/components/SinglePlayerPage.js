@@ -21,13 +21,16 @@ class SinglePlayerPage extends Component {
     }
 
     componentWillMount(props) {
-        console.log(this.props.location.state.difficulty);
-        this.setState({
-            NickName: this.props.location.state.playerName,
-            Difficulty: this.props.location.state.difficulty
-        })
+         if(this.props.location.state !== undefined){
+            this.setState({
+                NickName: this.props.location.state.playerName,
+                Difficulty: this.props.location.state.difficulty
+            })
+         }
+        
     }
 
+    //fade-in animation
     componentDidMount(props) {
         setTimeout(() => {
             this.setState({ DidMount: true })
@@ -55,7 +58,7 @@ class SinglePlayerPage extends Component {
             <div className={`SinglePlayerPage slide-in ${this.state.DidMount && 'visible'}`}>
                 <Header />
                 <ScoreBar Score={this.state.Score} Missed={this.state.Missed} NickName={this.state.NickName} />
-                <GameBoard setAsideScores={this.updateScore} Score={this.state.Score} Missed={this.state.Missed} NickName={this.state.NickName} Difficulty={this.state.Difficulty} >
+                <GameBoard updateScore={this.updateScore} Score={this.state.Score} Missed={this.state.Missed} NickName={this.state.NickName} Difficulty={this.state.Difficulty} >
                 </GameBoard>
             </div>
 

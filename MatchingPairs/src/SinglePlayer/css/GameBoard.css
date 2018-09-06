@@ -15,10 +15,10 @@
     background-color: rgb(240, 240, 240);
 }
 
-.navbar{
+.scoreBar{
     width: 70%;
     margin:0 auto;
-    font-size: 23px;
+    font-size: 22px;
     padding: 0px;
 }
 
@@ -50,7 +50,12 @@
     max-height: 400px;
     overflow-y: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-  }
+}
+
+.nickName{
+    font-weight: bold;
+    margin-left: 10%;
+}
 
 #GameBoard{
     margin: 0 auto;
@@ -133,7 +138,9 @@
         max-width: 400px;
     }
     
-    .navbar{
+    .scoreBar{
         width: 100%;
+        font-size: 20px;
     }
+
 }
