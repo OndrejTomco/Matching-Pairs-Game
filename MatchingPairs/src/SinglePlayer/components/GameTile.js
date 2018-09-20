@@ -17,7 +17,7 @@ const GameTile = (props) => {
             <img
                 className={props.imgClass}
                 data-img={props.image}
-                src="/nhl/nhl-logo.png" width="80" height="90"
+                src={props.back} width="80" height="90"
                 alt="A Tile"
             />
         </div>

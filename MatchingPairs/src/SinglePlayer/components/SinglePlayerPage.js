@@ -15,7 +15,8 @@ class SinglePlayerPage extends Component {
             Missed: 0,
             DidMount: false,
             NickName: 'Player',
-            Difficulty: 10
+            Difficulty: 10,
+            chosenTopic: 'topic-nhl'
 
         };
     }
@@ -24,7 +25,8 @@ class SinglePlayerPage extends Component {
          if(this.props.location.state !== undefined){
             this.setState({
                 NickName: this.props.location.state.playerName,
-                Difficulty: this.props.location.state.difficulty
+                Difficulty: this.props.location.state.difficulty,
+                chosenTopic:this.props.location.state.chosenTopic
             })
          }
         
@@ -58,7 +60,7 @@ class SinglePlayerPage extends Component {
             <div className={`SinglePlayerPage slide-in ${this.state.DidMount && 'visible'}`}>
                 <Header />
                 <ScoreBar Score={this.state.Score} Missed={this.state.Missed} NickName={this.state.NickName} />
-                <GameBoard updateScore={this.updateScore} Score={this.state.Score} Missed={this.state.Missed} NickName={this.state.NickName} Difficulty={this.state.Difficulty} >
+                <GameBoard updateScore={this.updateScore} Score={this.state.Score} Missed={this.state.Missed} NickName={this.state.NickName} Difficulty={this.state.Difficulty} Topic = {this.state.chosenTopic} >
                 </GameBoard>
             </div>
 

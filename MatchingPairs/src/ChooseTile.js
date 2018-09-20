@@ -8,7 +8,7 @@ class ChooseTile extends Component {
     }
 
     handleChooseTile(e) {
-        console.log(e.target);
+        console.log(e.target.parentNode);
         let formerSelected = Array.from(document.getElementsByClassName('selected'));
 
         //make others not selected
@@ -20,17 +20,18 @@ class ChooseTile extends Component {
         //remove not Selected and make selected
         e.target.closest('.chooseTile').classList.remove('notSelected');
         e.target.closest('.chooseTile').classList.add('selected');
-        
+
     }
 
     render(props) {
         return (
-            <div className={this.props.offset}>
-                <div className={this.props.tileClass} onClick={this.handleChooseTile}>
-                    <img className="card-img-top" src={this.props.image} alt="Card cap" />
-                    <h5 className="card-title mt-2">{this.props.title}</h5>
+            <div className="choice-card">
+                <div className='card chooseTile mb-3 p-2' id={this.props.topic.id} onClick={this.handleChooseTile}>
+                    <img className="card-img-top" src={this.props.topic.src} width="100" alt="Card cap" />
+                    <h5 className="card-title mt-2">{this.props.topic.title}</h5>
                 </div>
             </div>
+
         )
     }
 }

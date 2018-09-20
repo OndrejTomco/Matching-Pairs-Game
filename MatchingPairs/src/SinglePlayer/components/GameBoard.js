@@ -17,8 +17,11 @@ class GameBoard extends Component {
     this.state = {
       Logos: [],
       FlippedTiles: 0,
+      backImg: '/nhl/nhl-logo.png',
+      frontImgPath: '/nhl/logo-',
       ShowWinningModal: false,
-      ShowHighScoresModal: false
+      ShowHighScoresModal: false,
+
     };
   }
 
@@ -27,15 +30,18 @@ class GameBoard extends Component {
       this.disableTiles();
       this.compareTiles();
     }
+
+    console.log(this.state);
   }
 
   componentWillMount(props) {
+    //fill logo array
     let logoArray = [];
     for (let i = 0; i < this.props.Difficulty; i++) {
       let canContinue = false;
 
       while (canContinue === false) {
-        let random = Math.floor(Math.random() * 31) + 1;
+        let random = Math.floor(Math.random() * 13) + 1;
         let num = logoArray.filter((number) => {
           return number === random;
         })
@@ -48,7 +54,20 @@ class GameBoard extends Component {
     }
 
     logoArray.sort(() => 0.5 - Math.random());
-    this.setState({ Logos: logoArray });
+
+    //set back image
+    let backImg;
+    let frontImgPath;
+    switch(this.props.Topic){
+      case 'topic-nhl': backImg = '/nhl/nhl-logo.png'; frontImgPath = '/nhl/logo-'; break
+      case 'topic-programming': backImg = '/prog-choice.png'; frontImgPath = '/progLanguages/prog-'
+
+    }
+    this.setState({ 
+      Logos: logoArray,
+      backImg,
+      frontImgPath
+    });
 
   }
 
@@ -92,7 +111,7 @@ class GameBoard extends Component {
   flipBack(tile) {
     tile.forEach((tile) => {
       tile.classList.remove('turned');
-      tile.children[0].src = '/nhl/nhl-logo.png';
+      tile.children[0].src = this.state.backImg;
     })
 
     this.enableTiles();
@@ -140,7 +159,7 @@ class GameBoard extends Component {
 
   handleTile(tile, props) {
     tile.parentNode.classList.add('turned');
-    tile.src = '/nhl/logo-' + tile.dataset.img + '.png';
+    tile.src = this.state.frontImgPath + tile.dataset.img + '.png';
     tile.parentNode.className += ' disabled';
 
     this.setState((prevState) => ({
@@ -152,7 +171,7 @@ class GameBoard extends Component {
   renderTiles() {
     const tiles = [];
     for (var i = 0; i < this.state.Logos.length; i++) {
-      tiles.push(<GameTile imgClass={'tile-img'} tileClass={'z-depth-1 tile tile-' + i} image={this.state.Logos[i]} sendData={this.handleTile} key={i} />)
+      tiles.push(<GameTile back = {this.state.backImg} imgClass={'tile-img'} tileClass={'z-depth-1 tile tile-' + i} image={this.state.Logos[i]} sendData={this.handleTile} key={i} />)
     }
     return tiles;
   }

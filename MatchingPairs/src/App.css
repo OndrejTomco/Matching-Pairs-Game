@@ -26,12 +26,24 @@ body{
 	position: absolute; 
 }
 
+.card{
+	height: 200px;
+	width: 150px;
+	margin: 10px;
+}
+
+.choice-card{
+	display: inline-block;
+	vertical-align: top;
+}
+
 .header{
 	letter-spacing: 5px;
 }
 
 .chooseTile{
 	cursor: pointer;
+	height: 170px;
 }
 
 .selected{

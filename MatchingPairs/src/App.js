@@ -13,19 +13,30 @@ class App extends Component {
     this.state = {
       didMount: false,
       playerName: null,
-      Difficulty: 8,
-      Redirect: false
+      difficulty: 8,
+      chosenTopic:'topic-nhl',
+      topics: [
+        { title: 'NHL Logos', src: '/nhl-choice.jpg',id:'topic-nhl' },
+        { title: 'Programming languages', src: '/prog-choice.png',id:'topic-programming' }
+      ],
+      Redirect: false,
     }
   }
   componentDidMount() {
     setTimeout(() => {
       this.setState({ didMount: true })
     }, 0)
+
+    let choiceCards = Array.from(document.querySelector('.choice-cards').children);
+    choiceCards.map((card,index) => index == 0 ? card.children[0].classList.add('selected') : card.children[0].classList.add('notSelected'));
+    
   }
 
   ValidateInput(e, props) {
-    var difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+    let difficulty = document.querySelector('input[name="difficulty"]:checked').value;
     let playerName = document.getElementById('playerName').value;
+    let topic = document.getElementsByClassName('chooseTile selected')[0].id;
+    
     if (playerName.trim().length < 1 || playerName.trim().length > 30) {
       e.preventDefault();
       document.getElementById('validation-error').classList.add('d-block');
@@ -33,7 +44,8 @@ class App extends Component {
       this.setState({
         redirect: true,
         playerName: playerName,
-        Difficulty: difficulty
+        difficulty: difficulty,
+        chosenTopic: topic
       })
     }
   }
@@ -43,8 +55,9 @@ class App extends Component {
       return <Redirect to={{
         pathname: '/singleplayer',
         state: {
-          difficulty: this.state.Difficulty,
-          playerName: this.state.playerName
+          difficulty: this.state.difficulty,
+          playerName: this.state.playerName,
+          chosenTopic:this.state.chosenTopic
         }
       }} push />
     }
@@ -56,13 +69,14 @@ class App extends Component {
         <h1 className="display-2 header mb-4 text-center">MATCHING PAIRS</h1>
 
         <div className="md-form mt-5">
-          <input type="text" id="playerName" placeholder="NickName" defaultValue={this.props.location.state === undefined ? '': this.props.location.state.playerName} className="form-control form-control-lg d-inline-block col-md-6 col-sm-10 col-10"  />
+          <input type="text" id="playerName" placeholder="NickName" defaultValue={this.props.location.state === undefined ? '' : this.props.location.state.playerName} className="form-control form-control-lg d-inline-block col-md-6 col-sm-10 col-10" />
           <small className="d-none text-danger" id="validation-error">Enter valid NickName</small>
         </div>
-        <div className="row">
-          <ChooseTile image={"/nhl-choice.jpg"} title={'NHL Logos'} tileClass={'card chooseTile mb-3 selected'} offset={'col-lg-3 col-md-4 col-sm-4 col-5 offset-3'} />
-          <ChooseTile image={"/trailer-choice.jpg"} title={'Trailers'} tileClass={'card chooseTile mb-3 notSelected'} offset={'col-lg-3 col-md-4 col-sm-4 col-5 offset-0'} />
+
+        <div className="choice-cards d-inline-block">
+          { this.state.topics.map((topic, index) => <ChooseTile topic={topic} />) }
         </div>
+
         <Difficulty />
 
         <div className="mt-5">
